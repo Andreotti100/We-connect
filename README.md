@@ -15,6 +15,13 @@ pip3 install weconnect-cli --break-system-packages
 Test:
 weconnect-cli --username 'email' --password 'my_password'
 
+setup:
+- go to domoticz/plugins
+- git clone https://github.com/Andreotti100/We-connect
+- restart domoticz
+- add We-connect at the hardware section
+
+Or:
 Download plugin.py and place it in /home/pi/domoticz/plugins/we-connect
 Make sure chmod is 644
 Restart Domoticz
