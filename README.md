@@ -3,6 +3,7 @@ Domoticz plugin to read my VW ID.3 battery percentage and distance left.
 Uses: Python API for the Volkswagen WeConnect Services
 URL: https://github.com/tillsteinbach/WeConnect-python
 
+
 Setup We-connect API on Raspberry Pi:
 
 apt install python3-pip
@@ -13,6 +14,10 @@ pip3 install weconnect-cli --break-system-packages
 
 Test:
 weconnect-cli --username 'email' --password 'my_password'
+
+Download plugin.py and place it in /home/pi/domoticz/plugins/we-connect
+Make sure chmod is 644
+Restart Domoticz
 
 Known issue: The check for the right VIN is not working for some reason!
 
