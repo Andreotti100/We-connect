@@ -20,7 +20,7 @@
 # P.S. the check for the right VIN is not working for some reason!
 
 """
-<plugin key="We-connect" name="We-connect" author="Andreotti" version="1.0.0" >
+<plugin key="We-connect" name="We-connect" author="Andreotti" version="1.0.1" >
   <description>
     <p>VIN is optional. Use it if you have more then one car connected in your app.</p>
     Credentials:
@@ -39,16 +39,25 @@ from weconnect import weconnect
 class BasePlugin:
 
   runAgain = 1
+  weConnect = None
 
   def __init__(self):
     return
 
   def onStart(self):
 
+    self.weConnect = weconnect.WeConnect(username=Parameters["Username"], password=Parameters["Password"], updateAfterLogin=False, loginOnInit=False)
+    if (self.weConnect):
+      try:
+        self.weConnect.login()
+      except Exception as e:
+        Domoticz.Log(f"Error during weConnect update: {str(e)}")
+        return
+
     if len(Devices) == 0:
       Domoticz.Device(Name="Battery", Unit=1, Type=243, Subtype=6, Switchtype=0).Create()
       Domoticz.Device(Name="Distance", Unit=2, TypeName="Custom", Options={"Custom": "1;km"}).Create()
-      
+
       Domoticz.Log("Created device: ")
 
   def onStop(self):
@@ -64,17 +73,15 @@ class BasePlugin:
 
     self.runAgain = 60  # 1x per 5 minuten checken (60 x 5 sec)
 
-    weConnect = weconnect.WeConnect(username=Parameters["Username"], password=Parameters["Password"], updateAfterLogin=False, loginOnInit=False)
-    if (weConnect):
+    if (self.weConnect):
       try:
-        weConnect.login()
-        weConnect.update()
+        self.weConnect.update()
       except Exception as e:
         Domoticz.Log(f"Error during weConnect update: {str(e)}")
         return
 
       try:
-        for vin, vehicle in weConnect.vehicles.items():
+        for vin, vehicle in self.weConnect.vehicles.items():
           # if (Parameters["VIN"] == "" or vin == Parameters["VIN"]):
             if "charging" in vehicle.domains and "batteryStatus" in vehicle.domains["charging"]:
               Devices[1].Update(nValue=0, sValue=str(vehicle.domains["charging"]["batteryStatus"].currentSOC_pct.value))
@@ -83,8 +90,6 @@ class BasePlugin:
       except Exception as e:
         Domoticz.Log(f"Error reading weConnect data: {str(e)}")
         return
-
-    weConnect = None
 
 global _plugin
 _plugin = BasePlugin()
