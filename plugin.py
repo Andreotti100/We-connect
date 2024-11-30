@@ -22,7 +22,10 @@
 """
 <plugin key="We-connect" name="We-connect" author="Andreotti" version="1.0.1" >
   <description>
-    <p>VIN is optional. Use it if you have more then one car connected in your app.</p>
+    <p>
+    VIN is optional. Use it if you have more then one car connected in your app.<br/>
+    On error, login again at: https://id.vwgroup.io/
+    </p>
     Credentials:
   </description>
   <params>
