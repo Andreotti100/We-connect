@@ -1,5 +1,7 @@
 Domoticz plugin to read my VW ID.3 battery percentage and distance left.
 
+<img src="https://github.com/Andreotti100/We-connect/blob/main/screenshot.png"/>
+
 Uses: Python API for the Volkswagen WeConnect Services
 URL: https://github.com/tillsteinbach/WeConnect-python
 
